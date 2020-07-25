@@ -1,5 +1,9 @@
 # data-playground
 
+## Demo
+
+[DataTemplatePlaygound online demo](https://walter-la.github.io/DataTemplatePlaygound/).
+
 ## Project setup
 ```
 npm install
