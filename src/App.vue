@@ -3,12 +3,26 @@
        class=" bg-dark">
 
     <div class="vh-100 mx-3">
-      <div>
-        <div class="h1 text-info text-center py-5">
-          CSV DATA TO THE TEMPLATE THAT YOU WANT
-        </div>
+
+      <div class="h1 text-info text-center py-5">
+        The Data Copied from Google Excel to generate the template code.
       </div>
       <b-container fluid>
+        <b-row class="text-warning text-center h4">
+          <b-col>
+            <span>Google Excel Header with Data</span>
+          </b-col>
+          <b-col>
+            <span>Html with Vue Syntax</span>
+            <b-button type="button"
+                      class="ml-3"
+                      @click="createExampleByheaders">Create Example by headers</b-button>
+          </b-col>
+          <b-col>
+            <span>The Output Code (click for copy)</span>
+          </b-col>
+        </b-row>
+
         <b-row>
           <b-col>
             <b-form-textarea v-model="columnNameText"
@@ -16,59 +30,50 @@
                              placeholder="Column names of CSV"
                              autofocus>
             </b-form-textarea>
-          </b-col>
-          <b-col>
-          </b-col>
-          <b-col>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
             <b-form-textarea v-model="text"
-                             rows="24"
+                             rows="22"
                              placeholder="Data of CSV">
             </b-form-textarea>
           </b-col>
           <b-col>
             <b-form-textarea v-model="template"
-                             rows="24"
-                             :placeholder="templateExample"
+                             rows="25"
+                             placeholder="html with vue syntax"
                              autofocus>
             </b-form-textarea>
           </b-col>
           <b-col>
-            <div class="text-white">
+            <div id="output"
+                 class="bg-white"
+                 style="overflow: scroll; max-height: 38rem;"
+                 @click="copyOuputText"
+                 v-b-popover.top="'Copied to clipboard.'">
               <dynamic :template="template"
                        :data="data"></dynamic>
             </div>
           </b-col>
         </b-row>
       </b-container>
+
+      <div class="h1 secondary text-center py-5">
+        power by Walter
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import dynamic from '@/components/dynamic.js'
+import { columnNamesExample, textExample, createExampleByColumns } from './txt'
 export default {
   components: {
     dynamic
   },
   data() {
     return {
-      columnNameText: '',
-      text: '',
-      template: `<div>
-	<b-form-textarea :value="items"
-	                 rows="24">
-	</b-form-textarea>
-</div>`,
-      templateExample: `example: 
-<div>
-	<b-form-textarea :value="items"
-	                 rows="24">
-	</b-form-textarea>
-</div>`
+      columnNameText: columnNamesExample,
+      text: textExample,
+      template: '<div></div>'
     }
   },
   computed: {
@@ -91,7 +96,26 @@ export default {
       }
     }
   },
-  methods: {},
+  methods: {
+    createExampleByheaders() {
+      this.template = createExampleByColumns(this.columnNames)
+    },
+    copyOuputText() {
+      const copyText = document.getElementById('output').textContent
+      const textArea = document.createElement('textarea')
+      textArea.textContent = copyText
+      document.body.append(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      textArea.remove()
+      setTimeout(() => {
+        this.$root.$emit('bv::hide::popover')
+      }, 5000)
+    }
+  },
+  created() {
+    this.createExampleByheaders()
+  },
   mounted() {
     window.vm = this
   }
