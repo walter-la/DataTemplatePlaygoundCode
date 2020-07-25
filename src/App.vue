@@ -5,7 +5,7 @@
     <div class="vh-100 mx-3">
 
       <div class="h1 text-info text-center py-5">
-        The Data Copied from Google Excel to generate the template code.
+        The Data Copied from Google Excel or CSV to generate the template code.
       </div>
       <b-container fluid>
         <b-row class="text-warning text-center h4">
@@ -13,10 +13,7 @@
             <span>Google Excel Header with Data</span>
           </b-col>
           <b-col>
-            <span>Html with Vue Syntax</span>
-            <b-button type="button"
-                      class="ml-3"
-                      @click="createExampleByheaders">Create Example by headers</b-button>
+            <span>Html with Vue Syntax Template</span>
           </b-col>
           <b-col>
             <span>The Output Code (click for copy)</span>
@@ -26,17 +23,20 @@
         <b-row>
           <b-col>
             <b-form-textarea v-model="columnNameText"
+                             @change="columnNameTextChange"
                              rows="1"
                              placeholder="Column names of CSV"
                              autofocus>
             </b-form-textarea>
             <b-form-textarea v-model="text"
+                             @change="textChange"
                              rows="22"
                              placeholder="Data of CSV">
             </b-form-textarea>
           </b-col>
           <b-col>
             <b-form-textarea v-model="template"
+                             @change="templateChange"
                              rows="25"
                              placeholder="html with vue syntax"
                              autofocus>
@@ -51,6 +51,24 @@
               <dynamic :template="template"
                        :data="data"></dynamic>
             </div>
+          </b-col>
+        </b-row>
+        <b-row class="h4 text-center mt-3">
+          <b-col>
+            <b-button type="button"
+                      class="ml-3"
+                      @click="resetColumnNameText">Reset Headers</b-button>
+            <b-button type="button"
+                      class="ml-3"
+                      @click="resetText">Reset Data</b-button>
+          </b-col>
+          <b-col>
+            <b-button type="button"
+                      class="ml-3"
+                      @click="createExampleByheaders">Create Example by headers</b-button>
+          </b-col>
+          <b-col>
+
           </b-col>
         </b-row>
       </b-container>
@@ -111,9 +129,39 @@ export default {
       setTimeout(() => {
         this.$root.$emit('bv::hide::popover')
       }, 5000)
+    },
+    columnNameTextChange(value) {
+      localStorage.setItem('columnNameText', value)
+    },
+    textChange(value) {
+      localStorage.setItem('text', value)
+    },
+    templateChange(value) {
+      localStorage.setItem('template', value)
+    },
+    resetColumnNameText() {
+      this.columnNameText = columnNamesExample
+    },
+    resetText() {
+      this.text = textExample
     }
   },
   created() {
+    const columnNameText = localStorage.getItem('columnNameText')
+    const text = localStorage.getItem('text')
+    const template = localStorage.getItem('template')
+    if (columnNameText) {
+      this.columnNameText = columnNameText
+    }
+
+    if (text) {
+      this.text = text
+    }
+
+    if (template) {
+      this.template = template
+    }
+
     this.createExampleByheaders()
   },
   mounted() {
