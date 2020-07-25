@@ -150,6 +150,7 @@ export default {
     const columnNameText = localStorage.getItem('columnNameText')
     const text = localStorage.getItem('text')
     const template = localStorage.getItem('template')
+
     if (columnNameText) {
       this.columnNameText = columnNameText
     }
@@ -160,9 +161,9 @@ export default {
 
     if (template) {
       this.template = template
+    } else {
+      this.createExampleByheaders()
     }
-
-    this.createExampleByheaders()
   },
   mounted() {
     window.vm = this
