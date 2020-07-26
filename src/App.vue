@@ -8,7 +8,7 @@
       </div>
       <b-container fluid>
 
-        <b-row class="text-warning text-center h4">
+        <b-row class="text-warning h4">
           <b-col md="4"
                  cols="12"
                  class="my-1">
@@ -44,7 +44,12 @@
                              placeholder="html with vue syntax"
                              autofocus>
             </b-form-textarea>
-            <div class="my-3 text-center">
+            <div class="d-flex justify-content-center my-3">
+              <b-select :options="examples"
+                        v-model="selectedExampleValue"
+                        @change="examplesChange"
+                        style="width:12rem">
+                        </b-select>
               <b-button type="button"
                         class="ml-3"
                         @click="createExampleByheaders">Create Example by headers</b-button>
@@ -57,7 +62,7 @@
             <span class="mb-1">The Output Code (click for copy)</span>
             <div id="output"
                  class="bg-white"
-                 style="overflow: scroll; max-height: 38rem;"
+                 style="overflow: scroll; max-height: 38rem; text-left"
                  @click="copyOuputText"
                  v-b-popover.top="'Copied to clipboard.'">
               <dynamic :template="template"
@@ -77,7 +82,12 @@
 
 <script>
 import dynamic from '@/components/dynamic.js'
-import { columnNamesExample, textExample, createExampleByColumns } from './txt'
+import {
+  columnNamesExample,
+  textExample,
+  createExampleByColumns,
+  createClassExample
+} from './txt'
 export default {
   components: {
     dynamic
@@ -86,7 +96,18 @@ export default {
     return {
       columnNameText: columnNamesExample,
       text: textExample,
-      template: '<div></div>'
+      template: '<div></div>',
+      examples: [
+        {
+          text: 'new Class',
+          value: 1
+        },
+        {
+          text: 'Class definition',
+          value: 2
+        }
+      ],
+      selectedExampleValue: 1
     }
   },
   computed: {
@@ -111,7 +132,12 @@ export default {
   },
   methods: {
     createExampleByheaders() {
-      this.template = createExampleByColumns(this.columnNames)
+      if (this.selectedExampleValue === 1) {
+        this.template = createExampleByColumns(this.columnNames)
+      } else {
+        this.template = createClassExample()
+      }
+      this.templateChange(this.template)
     },
     copyOuputText() {
       const copyText = document.getElementById('output').textContent
@@ -136,9 +162,11 @@ export default {
     },
     resetColumnNameText() {
       this.columnNameText = columnNamesExample
+      this.columnNameTextChange(this.columnNameText)
     },
     resetText() {
       this.text = textExample
+      this.textChange(this.text)
     }
   },
   created() {

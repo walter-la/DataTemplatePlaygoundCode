@@ -26,15 +26,34 @@ const textExample = `1		DisplayName	nvarchar	20	YES	中文姓名
 
 
 function createExampleByColumns(columnNames) {
-    return `<div>
-    <pre v-for="(item, index) in items" :key="index">
-                new YourClassName
-                {
-${ columnNames.map(name => `                    ${name} = "{{ item.${name} }}"`)
+    return `<pre>
+    <div v-for="(item, index) in items" :key="index">
+        new YourClassName
+        {
+${ columnNames.map(name => `            ${name} = "{{ item.${name} }}"`)
             .join(',\r\n')}
-                },
-    </pre>
-    </div>`
+        },
+    </div>
+    </pre>`
 }
 
-export { columnNamesExample, textExample, createExampleByColumns }
+function createClassExample() {
+    return `<pre>
+    
+    /// &lt;summary&gt;
+    /// 
+    /// &lt;/summary&gt;
+    public partial class YourClassName
+    {
+        <div v-for="(item, index) in items" :key="index">
+        /// &lt;summary&gt;
+        /// 
+        /// &lt;/summary&gt;
+        public {{ (item.DataType === 'int') ? 'int' : (item.DataType.startsWith('datetime')) ? 'DateTime' : 'string' }} {{ item.ColumnName }} { get; set; }
+        </div>
+    }
+
+    </pre>`
+}
+
+export { columnNamesExample, textExample, createExampleByColumns, createClassExample }
