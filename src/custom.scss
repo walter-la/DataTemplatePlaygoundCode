@@ -1,2 +1,9 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/bootstrap-vue/src/index.scss';
+
+$bg-color: #1e1e1e;
+
+body {
+  font-family: Consolas;
+  background-color: $bg-color;
+}

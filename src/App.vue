@@ -1,27 +1,18 @@
 <template>
-  <div id="app"
-       class=" bg-dark">
+  <div id="app">
 
     <div class="vh-100 mx-3">
 
-      <div class="h1 text-info text-center py-5">
+      <div class="h2 text-info text-center py-5">
         The Data Copied from Google Excel or CSV to generate the template code.
       </div>
       <b-container fluid>
-        <b-row class="text-warning text-center h4">
-          <b-col>
-            <span>Google Excel Header with Data</span>
-          </b-col>
-          <b-col>
-            <span>Html with Vue Syntax Template</span>
-          </b-col>
-          <b-col>
-            <span>The Output Code (click for copy)</span>
-          </b-col>
-        </b-row>
 
-        <b-row>
-          <b-col>
+        <b-row class="text-warning text-center h4">
+          <b-col md="4"
+                 cols="12"
+                 class="my-1">
+            <span class="mb-1">CSV Header with Data</span>
             <b-form-textarea v-model="columnNameText"
                              @change="columnNameTextChange"
                              rows="1"
@@ -33,16 +24,37 @@
                              rows="22"
                              placeholder="Data of CSV">
             </b-form-textarea>
+            <div class="d-flex justify-content-center my-3 ">
+              <b-button type="button"
+                        class="ml-3"
+                        @click="resetColumnNameText">Reset Headers</b-button>
+              <b-button type="button"
+                        class="ml-3"
+                        @click="resetText">Reset Data</b-button>
+            </div>
           </b-col>
-          <b-col>
+
+          <b-col md="4"
+                 cols="12"
+                 class="my-1">
+            <span class="mb-1">Html with Vue Syntax Template</span>
             <b-form-textarea v-model="template"
                              @change="templateChange"
                              rows="25"
                              placeholder="html with vue syntax"
                              autofocus>
             </b-form-textarea>
+            <div class="my-3 text-center">
+              <b-button type="button"
+                        class="ml-3"
+                        @click="createExampleByheaders">Create Example by headers</b-button>
+            </div>
+
           </b-col>
-          <b-col>
+          <b-col md="4"
+                 cols="12"
+                 class="my-1">
+            <span class="mb-1">The Output Code (click for copy)</span>
             <div id="output"
                  class="bg-white"
                  style="overflow: scroll; max-height: 38rem;"
@@ -53,24 +65,7 @@
             </div>
           </b-col>
         </b-row>
-        <b-row class="h4 text-center mt-3">
-          <b-col>
-            <b-button type="button"
-                      class="ml-3"
-                      @click="resetColumnNameText">Reset Headers</b-button>
-            <b-button type="button"
-                      class="ml-3"
-                      @click="resetText">Reset Data</b-button>
-          </b-col>
-          <b-col>
-            <b-button type="button"
-                      class="ml-3"
-                      @click="createExampleByheaders">Create Example by headers</b-button>
-          </b-col>
-          <b-col>
 
-          </b-col>
-        </b-row>
       </b-container>
 
       <div class="h1 secondary text-center py-5">
